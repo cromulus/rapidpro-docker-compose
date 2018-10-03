@@ -1,4 +1,4 @@
-version: "2.1"
+version: "2"
 services:
   nginx:
     image: nginx
@@ -14,11 +14,11 @@ services:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
       - "/etc/nginx/certs"
     environment:
-      - VIRTUAL_HOST=${RAPIDPRO_HOST:-localhost}
-      - VIRTUAL_NETWORK=${RAPIDPRO_HOST:-localhost}
+      - VIRTUAL_HOST=${RAPIDPRO_HOST}
+      - VIRTUAL_NETWORK=${RAPIDPRO_HOST}
       - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=${RAPIDPRO_HOST:-localhost}
-      - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL:-admin@example.com}
+      - LETSENCRYPT_HOST=${RAPIDPRO_HOST}
+      - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL}
   nginx-proxy:
     image: jwilder/nginx-proxy
     ports:
@@ -45,46 +45,46 @@ services:
     ports:
       - "8000"
     environment:
-      - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
-      - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
-      - TEMBA_HOST=${RAPIDPRO_HOST:-localhost}
+      - DOMAIN_NAME=${RAPIDPRO_HOST}
+      - ALLOWED_HOSTS=${RAPIDPRO_HOST}
+      - TEMBA_HOST=${RAPIDPRO_HOST}
       - DJANGO_DEBUG=off
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - SECRET_KEY=${SECRET_KEY:-super-secret-key}
-      - MANAGEPY_COLLECTSTATIC=${MANAGEPY_COLLECTSTATIC:-off}
-      - MANAGEPY_COMPRESS=${MANAGEPY_COMPRESS:-off}
-      - MANAGEPY_INIT_DB=${MANAGEPY_INIT_DB:-on}
-      - MANAGEPY_MIGRATE=${MANAGEPY_MIGRATE:-on}
-      - VIRTUAL_HOST=${RAPIDPRO_HOST:-localhost}
-      - VIRTUAL_NETWORK=${RAPIDPRO_HOST:-localhost}
+      - SECRET_KEY=${SECRET_KEY}
+      - MANAGEPY_COLLECTSTATIC=${MANAGEPY_COLLECTSTATIC}
+      - MANAGEPY_COMPRESS=${MANAGEPY_COMPRESS}
+      - MANAGEPY_INIT_DB=${MANAGEPY_INIT_DB}
+      - MANAGEPY_MIGRATE=${MANAGEPY_MIGRATE}
+      - VIRTUAL_HOST=${RAPIDPRO_HOST}
+      - VIRTUAL_NETWORK=${RAPIDPRO_HOST}
       - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=${RAPIDPRO_HOST:-localhost}
-      - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL:-admin@example.com}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
-      - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME:-changeme}
-      - AWS_BUCKET_DOMAIN=${AWS_BUCKET_DOMAIN:-changeme}
-      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME:-changeme}
-      - AWS_STATIC=${AWS_STATIC:-False}
-      - AWS_MEDIA=${AWS_MEDIA:-False}
+      - LETSENCRYPT_HOST=${RAPIDPRO_HOST}
+      - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
+      - AWS_BUCKET_DOMAIN=${AWS_BUCKET_DOMAIN}
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - AWS_STATIC=${AWS_STATIC}
+      - AWS_MEDIA=${AWS_MEDIA}
       - AWS_QUERYSTRING_AUTH=False
-      - CDN_DOMAIN_NAME=${AWS_BUCKET_DOMAIN:-changeme}
-      - EMAIL_HOST=${EMAIL_HOST:-smtp.example.com}
-      - EMAIL_HOST_USER=${EMAIL_HOST_USER:-admin@example.com}
-      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-changeme}
-      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-admin@example.com}
-      - SEND_EMAILS=${SEND_EMAILS:-off}
-      - SEND_MESSAGES=${SEND_MESSAGES:-off}
-      - SEND_AIRTIME=${SEND_AIRTIME:-off}
-      - SEND_CALLS=${SEND_CALLS:-off}
-      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
-      - DJANGO_COMPRESSOR=${DJANGO_COMPRESSOR:-off}
-      - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-off}
+      - CDN_DOMAIN_NAME=${AWS_BUCKET_DOMAIN}
+      - EMAIL_HOST=${EMAIL_HOST}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL}
+      - SEND_EMAILS=${SEND_EMAILS}
+      - SEND_MESSAGES=${SEND_MESSAGES}
+      - SEND_AIRTIME=${SEND_AIRTIME}
+      - SEND_CALLS=${SEND_CALLS}
+      - SEND_WEBHOOKS=${SEND_WEBHOOKS}
+      - DJANGO_COMPRESSOR=${DJANGO_COMPRESSOR}
+      - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS}
       - BRANDING_API_LINK=${BRANDING_API_LINK}
       - BRANDING_LINK=${BRANDING_LINK}
-      - IS_PROD=${IS_PROD:-off}
+      - IS_PROD=${IS_PROD}
   celery_base:
     image: sdehaan/rapidpro:v4
     depends_on:
@@ -97,7 +97,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - SECRET_KEY=${SECRET_KEY:-super-secret-key}
+      - SECRET_KEY=${SECRET_KEY}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=INFO", "--queues=celery,flows"]
   celery_msgs:
     image: sdehaan/rapidpro:v4
@@ -111,7 +111,7 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - SECRET_KEY=${SECRET_KEY:-super-secret-key}
+      - SECRET_KEY=${SECRET_KEY}
     command: ["/venv/bin/celery", "--app=temba", "worker", "--loglevel=INFO", "--queues=msgs,handler"]
   redis:
     image: redis:alpine
@@ -122,7 +122,7 @@ services:
     volumes:
       - data:/var/lib/postgresql
   elasticsearch:
-    image: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     container_name: elasticsearch
     environment:
       - bootstrap.memory_lock=true
@@ -156,7 +156,7 @@ services:
       - redis
       - postgresql
     environment:
-      - COURIER_DOMAIN=${RAPIDPRO_HOST:-localhost}
+      - COURIER_DOMAIN=${RAPIDPRO_HOST}
       - COURIER_SPOOL_DIR=/tmp/courier/
       - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro
       - COURIER_REDIS=redis://redis:6379/8
