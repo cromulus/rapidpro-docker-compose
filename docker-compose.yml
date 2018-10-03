@@ -1,4 +1,4 @@
-version: "2"
+version: "2.2"
 services:
   nginx:
     image: nginx
@@ -123,6 +123,7 @@ services:
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
