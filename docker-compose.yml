@@ -120,7 +120,8 @@ services:
       - data:/var/lib/postgresql
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
-    container_name: elasticsearch
+    links:
+        - rp-indexer
     environment:
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
