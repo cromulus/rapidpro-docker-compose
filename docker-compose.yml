@@ -153,7 +153,7 @@ services:
      - redis
      - postgresql
    environment:
-     - COURIER_DOMAIN=EXAMPLE.COM
+     - COURIER_DOMAIN=localhost
      - COURIER_SPOOL_DIR=/tmp/courier/
      - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro
      - COURIER_REDIS=redis://redis:6379/8
