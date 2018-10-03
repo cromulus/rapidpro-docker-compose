@@ -1,0 +1,168 @@
+#
+# NOTE: This docker-compose is not used for building the rapidpro docker
+#       releases, it is a compose file for local development purposes.
+#
+
+version: "2"
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/etc/nginx/conf.d"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+      - "../../../volumes/proxy/certs:/etc/nginx/certs:ro"
+    networks:
+      - proxy-tier
+  nginx-gen:
+    image: jwilder/docker-gen
+    container_name: nginx-gen
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "../../../volumes/proxy/templates/nginx-compose-v2.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro"
+    volumes_from:
+      - nginx
+    entrypoint: /usr/local/bin/docker-gen -notify-sighup nginx -watch -only-exposed -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "../../../volumes/proxy/certs:/etc/nginx/certs:rw"
+    environment:
+      - NGINX_DOCKER_GEN_CONTAINER=nginx-gen
+  rapidpro:
+    image: sdehaan/rapidpro:v4
+    depends_on:
+      - redis
+      - postgresql
+      - elasticsearch
+    ports:
+      - '8000:8000'
+    environment:
+      - DOMAIN_NAME=localhost
+      - ALLOWED_HOSTS=localhost
+      - TEMBA_HOST=localhost
+      - DJANGO_DEBUG=off
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - REDIS_URL=redis://redis:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - SECRET_KEY=super-secret-key
+      - MANAGEPY_COLLECTSTATIC=on
+      - MANAGEPY_COMPRESS=on
+      - MANAGEPY_INIT_DB=on
+      - MANAGEPY_MIGRATE=on
+      - VIRTUAL_HOST=EXAMPLE.COM
+      - VIRTUAL_NETWORK=EXAMPLE.COM
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=EXAMPLE.COM
+      - LETSENCRYPT_EMAIL=email@example.com
+      - AWS_ACCESS_KEY_ID=changeme
+      - AWS_SECRET_ACCESS_KEY=changeme
+      - AWS_S3_REGION_NAME=changeme
+      - AWS_BUCKET_DOMAIN=changeme
+      - AWS_STORAGE_BUCKET_NAME=changme
+      - AWS_STATIC=False
+      - AWS_MEDIA=False
+      - AWS_QUERYSTRING_AUTH=False
+      - EMAIL_HOST=smtp.example.com
+      - EMAIL_HOST_USER=admin@example.com
+      - EMAIL_HOST_PASSWORD=changeme
+      - DEFAULT_FROM_EMAIL=admin@example.com
+      - SEND_EMAILS=off
+      - SEND_MESSAGES=off
+      - SEND_AIRTIME=off
+      - SEND_CALLS=off
+      - SEND_WEBHOOKS=off
+      - DJANGO_COMPRESSOR=on
+      - IS_PROD=off
+
+    volumes:
+      - "../../../volumes/examples/simple-site/conf.d/:/etc/nginx/conf.d"
+  celery_base:
+    image: sdehaan/rapidpro:v4
+    depends_on:
+      - rapidpro
+    links:
+      - redis
+      - postgresql
+      - elasticsearch
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - REDIS_URL=redis://redis:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - SECRET_KEY=super-secret-key
+    command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=INFO", "--queues=celery,flows"]
+  celery_msgs:
+    image: sdehaan/rapidpro:v4
+    depends_on:
+      - rapidpro
+    links:
+      - redis
+      - postgresql
+      - elasticsearch
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - REDIS_URL=redis://redis:6379/0
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - SECRET_KEY=super-secret-key
+    command: ["/venv/bin/celery", "--app=temba", "worker", "--loglevel=INFO", "--queues=msgs,handler"]
+  redis:
+    image: redis:alpine
+  postgresql:
+    image: mdillon/postgis:9.6
+    environment:
+      - POSTGRES_DB=rapidpro
+    volumes:
+      - data:/var/lib/postgresql
+  elasticsearch:
+    image: elasticsearch
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  rp-indexer:
+    build: ./rp-indexer/
+    depends_on:
+     - rapidpro
+    links:
+      - postgresql
+      - elasticsearch
+    environment:
+      - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro
+      - INDEXER_ELASTIC_URL=http://elasticsearch:9200
+  courier:
+   image: praekeltfoundation/courier
+   depends_on:
+     - rapidpro
+   links:
+     - redis
+     - postgresql
+   environment:
+     - COURIER_DOMAIN=EXAMPLE.COM
+     - COURIER_SPOOL_DIR=/tmp/courier/
+     - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro
+     - COURIER_REDIS=redis://redis:6379/8
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy
+volumes:
+  data:
+    driver: local
+  esdata1:
+    driver: local
