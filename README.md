@@ -7,4 +7,4 @@ A deployable rapidpro docker-compose setup. Batteries included:
 
 To deploy, copy `sample.env` to `.env`, edit it for correct values and then run `docker-compose up`
 
-NOTE: work in progress. Not yet functional!
+Works reasonably well on a single host.
