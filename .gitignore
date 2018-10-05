@@ -1,2 +1,6 @@
 .env
 nginx/
+!data/.keep_me
+!esdata/.keep_me
+data/data
+esdata/nodes
