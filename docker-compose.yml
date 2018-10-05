@@ -104,7 +104,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY}
     command: ["/venv/bin/celery", "--app=temba", "worker", "--loglevel=INFO", "--queues=msgs,handler"]
   redis:
@@ -138,8 +138,8 @@ services:
       - postgresql
       - elasticsearch
     environment:
-      - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro
-      - INDEXER_ELASTIC_URL=http://elasticsearch:9200
+      - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
+      - INDEXER_ELASTIC_URL=http://elastic:changeme@elasticsearch:9200
   courier:
     image: praekeltfoundation/courier
     depends_on:
