@@ -24,19 +24,19 @@ services:
       - "./nginx/html:/usr/share/nginx/html"
       - "./nginx/certs:/etc/nginx/certs"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-  # letsencrypt-nginx-proxy-companion:
-  #   image: jrcs/letsencrypt-nginx-proxy-companion
-  #   container_name: letsencrypt-nginx-proxy-companion
-  #   volumes_from:
-  #     - nginx-proxy
-  #   volumes:
-  #     - "./nginx/vhost.d:/etc/nginx/vhost.d"
-  #     - "./nginx/html:/usr/share/nginx/html"
-  #     - "./nginx/certs:/etc/nginx/certs"
-  #     - "/var/run/docker.sock:/tmp/docker.sock:ro"
-  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
-  #   environment:
-  #     - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
+  letsencrypt-nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx-proxy
+    volumes:
+      - "./nginx/vhost.d:/etc/nginx/vhost.d"
+      - "./nginx/html:/usr/share/nginx/html"
+      - "./nginx/certs:/etc/nginx/certs"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
   rapidpro:
     image: rapidpro/rapidpro:v4
     depends_on:
