@@ -114,7 +114,7 @@ services:
     environment:
       - POSTGRES_DB=rapidpro
     volumes:
-      - $PWD/data:/var/lib/postgresql
+      - $PWD/data:/var/lib/postgresql/data
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
