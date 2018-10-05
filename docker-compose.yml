@@ -1,4 +1,5 @@
-version: "2"
+# nginx-proxy to nginx, to rapidpro
+version: "3"
 services:
   nginx:
     image: nginx
@@ -7,13 +8,9 @@ services:
       - courier
     volumes:
       - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
-      - "/usr/share/nginx/html"
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "/etc/nginx/certs"
+      - "./nginx/certs:/etc/nginx/certs"
     environment:
       - VIRTUAL_HOST=${RAPIDPRO_HOST}
-      - VIRTUAL_NETWORK=rapidpro
-      - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=${RAPIDPRO_HOST}
       - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL}
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
@@ -27,23 +24,25 @@ services:
       - "./nginx/html:/usr/share/nginx/html"
       - "./nginx/certs:/etc/nginx/certs"
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-  letsencrypt-nginx-proxy-companion:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    container_name: letsencrypt-nginx-proxy-companion
-    volumes_from:
-      - nginx-proxy
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    environment:
-      - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
+  # letsencrypt-nginx-proxy-companion:
+  #   image: jrcs/letsencrypt-nginx-proxy-companion
+  #   container_name: letsencrypt-nginx-proxy-companion
+  #   volumes_from:
+  #     - nginx-proxy
+  #   volumes:
+  #     - "./nginx/vhost.d:/etc/nginx/vhost.d"
+  #     - "./nginx/html:/usr/share/nginx/html"
+  #     - "./nginx/certs:/etc/nginx/certs"
+  #     - "/var/run/docker.sock:/tmp/docker.sock:ro"
+  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
+  #   environment:
+  #     - LETSENCRYPT_TEST=${LETSENCRYPT_TEST}
   rapidpro:
     image: rapidpro/rapidpro:v4
     depends_on:
       - redis
       - postgresql
       - elasticsearch
-    ports:
-      - "8000"
     environment:
       - DOMAIN_NAME=${RAPIDPRO_HOST}
       - ALLOWED_HOSTS=${RAPIDPRO_HOST}
@@ -57,11 +56,6 @@ services:
       - MANAGEPY_COMPRESS=${MANAGEPY_COMPRESS}
       - MANAGEPY_INIT_DB=${MANAGEPY_INIT_DB}
       - MANAGEPY_MIGRATE=${MANAGEPY_MIGRATE}
-      - VIRTUAL_HOST=${RAPIDPRO_HOST}
-      - VIRTUAL_NETWORK=${RAPIDPRO_HOST}
-      - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=${RAPIDPRO_HOST}
-      - LETSENCRYPT_EMAIL=${RAPIDPRO_ADMIN_EMAIL}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
       - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME}
@@ -148,8 +142,6 @@ services:
       - INDEXER_ELASTIC_URL=http://elasticsearch:9200
   courier:
     image: praekeltfoundation/courier
-    ports:
-      - "8080"
     depends_on:
       - rapidpro
     links:
