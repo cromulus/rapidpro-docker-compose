@@ -27,6 +27,8 @@ services:
   letsencrypt-nginx-proxy-companion:
     image: jrcs/letsencrypt-nginx-proxy-companion
     container_name: letsencrypt-nginx-proxy-companion
+    depends_on:
+      - nginx-proxy
     volumes:
       - "./nginx/vhost.d:/etc/nginx/vhost.d"
       - "./nginx/html:/usr/share/nginx/html"
@@ -34,6 +36,7 @@ services:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
     image: rapidpro/rapidpro:v4
