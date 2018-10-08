@@ -41,9 +41,6 @@ services:
       - redis
       - postgresql
       - elasticsearch
-    volumes:
-      - ./data/static:/rapidpro/static/
-      - ./data/sitestatic:/rapidpro/sitestatic/
     environment:
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
       - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
@@ -57,6 +54,8 @@ services:
       - MANAGEPY_COMPRESS=${MANAGEPY_COMPRESS:-off}
       - MANAGEPY_INIT_DB=${MANAGEPY_INIT_DB:-on}
       - MANAGEPY_MIGRATE=${MANAGEPY_MIGRATE:-on}
+      - MANAGEPY_IMPORT_GEOJSON={$MANAGEPY_IMPORT_GEOJSON:-off}
+      - OSM_RELATION_IDS={$OSM_RELATION_IDS}
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - AWS_S3_REGION_NAME=${AWS_S3_REGION_NAME:-changeme}
