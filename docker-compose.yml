@@ -52,7 +52,7 @@ services:
       - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
       - TEMBA_HOST=${RAPIDPRO_HOST:-localhost}
       - DJANGO_DEBUG=${DJANGO_DEBUG:-off}
-      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY:-changeme}
@@ -94,7 +94,7 @@ services:
       - postgresql
       - elasticsearch
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY:-changeme}
@@ -108,7 +108,7 @@ services:
       - postgresql
       - elasticsearch
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
+      - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY:-changeme}
