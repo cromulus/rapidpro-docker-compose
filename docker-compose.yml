@@ -41,6 +41,9 @@ services:
       - redis
       - postgresql
       - elasticsearch
+    volumes:
+      - ./data/static:/rapidpro/static/
+      - ./data/sitestatic:/rapidpro/sitestatic/
     environment:
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
       - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
@@ -112,7 +115,7 @@ services:
     environment:
       - POSTGRES_DB=rapidpro
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
@@ -124,7 +127,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./data/esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
