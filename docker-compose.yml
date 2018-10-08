@@ -48,7 +48,7 @@ services:
       - DJANGO_DEBUG=${DJANGO_DEBUG:-off}
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY:-changeme}
       - MANAGEPY_COLLECTSTATIC=${MANAGEPY_COLLECTSTATIC:-off}
       - MANAGEPY_COMPRESS=${MANAGEPY_COMPRESS:-off}
@@ -90,7 +90,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro
       - REDIS_URL=redis://redis:6379/0
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
       - SECRET_KEY=${SECRET_KEY:-changeme}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=INFO", "--queues=celery,flows"]
   celery_msgs:
