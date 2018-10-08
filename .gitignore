@@ -1,6 +1,7 @@
 .env
 nginx/
 !data/.keep_me
-!esdata/.keep_me
-data/data
-esdata/nodes
+!data/esdata/.keep_me
+data/esdata/nodes
+data/sitestatic
+data/postgres
