@@ -125,7 +125,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ES_JAVA_OPTS=${ES_JAVA_OPTS}
       - discovery.type=single-node
     ulimits:
       memlock:
@@ -156,5 +156,5 @@ services:
     environment:
       - COURIER_DOMAIN=${RAPIDPRO_HOST:-locahost}
       - COURIER_SPOOL_DIR=/tmp/courier/
-      - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro
+      - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - COURIER_REDIS=redis://redis:6379/8
