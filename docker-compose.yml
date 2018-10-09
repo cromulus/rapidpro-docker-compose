@@ -125,7 +125,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms64m -Xmx64m"
+      - "ES_JAVA_OPTS=-Xms258m -Xmx256m"
       - discovery.type=single-node
     ulimits:
       memlock:
