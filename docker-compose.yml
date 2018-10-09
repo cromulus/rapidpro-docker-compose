@@ -125,14 +125,12 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms258m -Xmx256m"
+      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
       - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - ./data/esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
