@@ -84,6 +84,7 @@ services:
       - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-on}
       - BRANDING_API_LINK=${BRANDING_API_LINK}
       - BRANDING_LINK=${BRANDING_LINK}
+      - RAVEN_DSN={$RAVEN_DSN}
       - IS_PROD=${IS_PROD:-off}
   celery_base:
     image: rapidpro/rapidpro:v4
@@ -97,7 +98,13 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
+      - RAVEN_DSN={$RAVEN_DSN}
       - SECRET_KEY=${SECRET_KEY:-changeme}
+      - SEND_EMAILS=${SEND_EMAILS:-off}
+      - SEND_MESSAGES=${SEND_MESSAGES:-off}
+      - SEND_AIRTIME=${SEND_AIRTIME:-off}
+      - SEND_CALLS=${SEND_CALLS:-off}
+      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=INFO", "--queues=celery,flows"]
   celery_msgs:
     image: rapidpro/rapidpro:v4
@@ -111,7 +118,13 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
+      - RAVEN_DSN={$RAVEN_DSN}
       - SECRET_KEY=${SECRET_KEY:-changeme}
+      - SEND_EMAILS=${SEND_EMAILS:-off}
+      - SEND_MESSAGES=${SEND_MESSAGES:-off}
+      - SEND_AIRTIME=${SEND_AIRTIME:-off}
+      - SEND_CALLS=${SEND_CALLS:-off}
+      - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
     command: ["/venv/bin/celery", "--app=temba", "worker", "--loglevel=INFO", "--queues=msgs,handler"]
   redis:
     image: redis:alpine
@@ -156,3 +169,4 @@ services:
       - COURIER_SPOOL_DIR=/tmp/courier/
       - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - COURIER_REDIS=redis://redis:6379/8
+      - COURIER_SENTRY_DSN={$RAVEN_DSN}
