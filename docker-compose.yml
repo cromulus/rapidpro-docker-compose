@@ -84,7 +84,6 @@ services:
       - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-on}
       - BRANDING_API_LINK=${BRANDING_API_LINK}
       - BRANDING_LINK=${BRANDING_LINK}
-      - RAVEN_DSN={$RAVEN_DSN}
       - IS_PROD=${IS_PROD:-off}
   celery_base:
     image: rapidpro/rapidpro:v4
@@ -98,7 +97,6 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
-      - RAVEN_DSN={$RAVEN_DSN}
       - SECRET_KEY=${SECRET_KEY:-changeme}
       - SEND_EMAILS=${SEND_EMAILS:-off}
       - SEND_MESSAGES=${SEND_MESSAGES:-off}
@@ -118,7 +116,6 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
       - ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200
-      - RAVEN_DSN={$RAVEN_DSN}
       - SECRET_KEY=${SECRET_KEY:-changeme}
       - SEND_EMAILS=${SEND_EMAILS:-off}
       - SEND_MESSAGES=${SEND_MESSAGES:-off}
@@ -169,4 +166,3 @@ services:
       - COURIER_SPOOL_DIR=/tmp/courier/
       - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - COURIER_REDIS=redis://redis:6379/8
-      - COURIER_SENTRY_DSN={$RAVEN_DSN}
