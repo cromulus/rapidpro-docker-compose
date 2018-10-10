@@ -156,6 +156,17 @@ services:
     environment:
       - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - INDEXER_ELASTIC_URL=http://elastic:changeme@elasticsearch:9200
+  rp-archiver:
+    image: cromulus/rp-archiver
+    depends_on:
+      - rapidpro
+    links:
+      - postgresql
+    environment:
+      - ARCHIVER_S3_BUCKET=${AWS_STORAGE_BUCKET_NAME:-changeme}
+      - ARCHIVER_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
+      - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
+      - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   courier:
     image: praekeltfoundation/courier
     depends_on:
