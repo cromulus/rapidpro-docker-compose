@@ -167,7 +167,7 @@ services:
       - COURIER_DOMAIN=${RAPIDPRO_HOST:-locahost}
       - COURIER_SPOOL_DIR=/tmp/courier/
       - COURIER_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
-      - COURIER_REDIS=redis://redis:6379/8
+      - COURIER_REDIS=redis://redis:6379/0
       - COURIER_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
       - COURIER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - COURIER_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
