@@ -9,6 +9,7 @@ services:
     volumes:
       - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
       - "./nginx/certs:/etc/nginx/certs"
+      - "./data/sitestatic:/sitestatic"
     environment:
       - VIRTUAL_HOST=${RAPIDPRO_HOST:-localhost}
       - LETSENCRYPT_HOST=${RAPIDPRO_HOST:-localhost}
@@ -47,6 +48,8 @@ services:
       - redis
       - postgresql
       - elasticsearch
+    volumes:
+      - "./data/sitestatic:/sitestatic"
     environment:
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
       - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
