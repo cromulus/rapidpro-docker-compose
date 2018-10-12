@@ -87,6 +87,7 @@ services:
       - BRANDING_ALLOW_SIGNUPS=${BRANDING_ALLOW_SIGNUPS:-on}
       - BRANDING_API_LINK=${BRANDING_API_LINK}
       - BRANDING_LINK=${BRANDING_LINK}
+      - BRANDING_SPLASH=${BRANDING_SPLASH}
       - IS_PROD=${IS_PROD:-off}
   celery_base:
     image: rapidpro/rapidpro:v4
