@@ -142,14 +142,15 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms256m -Xmx256m"
+      - "ES_HEAP_SIZE=128m"
+      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
       - discovery.type=single-node
     ulimits:
       memlock:
         soft: -1
         hard: -1
   rp-indexer:
-    image: praekeltfoundation/rp-indexer
+    image: praekeltfoundation/rp-indexer:latest
     depends_on:
      - rapidpro
     links:
@@ -169,8 +170,27 @@ services:
       - ARCHIVER_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
+  mailroom:
+    image: praekeltfoundation/mailroom:latest
+    depends_on:
+      - rapidpro 
+    links:
+      - redis
+      - postgresql
+    environment:
+      - MAILROOM_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
+      - MAILROOM_REDIS=redis://redis:6379/0
+      - MAILROOM_SMTP_SERVER=${MAILROOM_SMTP_SERVER:-smtp://user%40password@server:port/?from=foo%40gmail.com}
+      - MAILROOM_ATTACHMENT_DOMAIN=${MAILROOM_ATTACHMENT_DOMAIN:-localhost}
+      - MAILROOM_DOMAIN=${RAPIDPRO_HOST:-localhost}
+      - MAILROOM_ATTACHMENT_DOMAIN=${RAPIDPRO_HOST:-localhost}
+      - MAILROOM_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
+      - MAILROOM_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
+      - MAILROOM_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
+      - MAILROOM_S3_MEDIA_PREFIX=mailroom
+      - MAILROOM_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
   courier:
-    image: praekeltfoundation/courier
+    image: praekeltfoundation/courier:latest
     depends_on:
       - rapidpro
     links:
@@ -186,3 +206,4 @@ services:
       - COURIER_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
       - COURIER_S3_MEDIA_PREFIX=courier
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
+      - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
