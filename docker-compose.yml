@@ -188,7 +188,7 @@ services:
       - MAILROOM_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - MAILROOM_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
       - MAILROOM_S3_MEDIA_PREFIX=mailroom
-      - MAILROOM_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
+      - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
   courier:
     image: praekeltfoundation/courier:latest
     depends_on:
