@@ -92,7 +92,7 @@ services:
       - IS_PROD=${IS_PROD:-off}
       - MAILROOM_URL='http://mailroom:8090'
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
-      - STORAGE_URL=${STOAGE_URL}
+      - STORAGE_URL=${STORAGE_URL}
   celery_base:
     image: praekeltfoundation/rapidpro:v5
     depends_on:
