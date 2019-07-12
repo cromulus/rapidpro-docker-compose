@@ -90,6 +90,8 @@ services:
       - BRANDING_LINK=${BRANDING_LINK}
       - BRANDING_SPLASH=${BRANDING_SPLASH}
       - IS_PROD=${IS_PROD:-off}
+      - MAILROOM_URL='http://mailroom:8090'
+      - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
   celery_base:
     image: praekeltfoundation/rapidpro:v5
     depends_on:
@@ -171,7 +173,7 @@ services:
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
-    image: praekeltfoundation/mailroom:latest
+    image: cromulus/mailroom:latest
     depends_on:
       - rapidpro 
     links:
@@ -181,7 +183,6 @@ services:
       - MAILROOM_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - MAILROOM_REDIS=redis://redis:6379/0
       - MAILROOM_SMTP_SERVER=${MAILROOM_SMTP_SERVER:-smtp://user%40password@server:port/?from=foo%40gmail.com}
-      - MAILROOM_ATTACHMENT_DOMAIN=${MAILROOM_ATTACHMENT_DOMAIN:-localhost}
       - MAILROOM_DOMAIN=${RAPIDPRO_HOST:-localhost}
       - MAILROOM_ATTACHMENT_DOMAIN=${RAPIDPRO_HOST:-localhost}
       - MAILROOM_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-changeme}
@@ -189,6 +190,7 @@ services:
       - MAILROOM_S3_REGION=${AWS_S3_REGION_NAME:-changeme}
       - MAILROOM_S3_MEDIA_PREFIX=mailroom
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
+      - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
   courier:
     image: praekeltfoundation/courier:latest
     depends_on:
