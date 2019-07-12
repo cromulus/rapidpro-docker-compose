@@ -43,7 +43,7 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: rapidpro/rapidpro:v4
+    image: praekeltfoundation/rapidpro:v5
     depends_on:
       - redis
       - postgresql
@@ -91,7 +91,7 @@ services:
       - BRANDING_SPLASH=${BRANDING_SPLASH}
       - IS_PROD=${IS_PROD:-off}
   celery_base:
-    image: rapidpro/rapidpro:v4
+    image: praekeltfoundation/rapidpro:v5
     depends_on:
       - rapidpro
     links:
@@ -111,7 +111,7 @@ services:
       - IS_PROD=${IS_PROD:-off}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
-    image: rapidpro/rapidpro:v4
+    image: praekeltfoundation/rapidpro:v5
     depends_on:
       - rapidpro
     links:
@@ -142,8 +142,8 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.0
     environment:
       - bootstrap.memory_lock=true
-      - "ES_HEAP_SIZE=128m"
-      - "ES_JAVA_OPTS=-Xms128m -Xmx128m"
+      - ES_HEAP_SIZE=128m
+      - ES_JAVA_OPTS=-Xms128m -Xmx128m
       - discovery.type=single-node
     ulimits:
       memlock:
