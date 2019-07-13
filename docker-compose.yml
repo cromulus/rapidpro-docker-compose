@@ -199,6 +199,7 @@ services:
       - MAILROOM_S3_MEDIA_PREFIX=mailroom
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
+      - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
   courier:
     image: praekeltfoundation/courier:2.0.2
     depends_on:
