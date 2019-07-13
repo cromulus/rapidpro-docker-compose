@@ -183,8 +183,6 @@ services:
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
     image: cromulus/mailroom:2.0.9
-    depends_on:
-      - rapidpro 
     links:
       - redis
       - postgresql
