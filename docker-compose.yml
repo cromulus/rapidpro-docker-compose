@@ -43,7 +43,7 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: praekeltfoundation/rapidpro:v5
+    image: praekeltfoundation/rapidpro:v5.0.9
     depends_on:
       - redis
       - postgresql
@@ -94,7 +94,7 @@ services:
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - STORAGE_URL=${STORAGE_URL}
   celery_base:
-    image: praekeltfoundation/rapidpro:v5
+    image: praekeltfoundation/rapidpro:v5.0.9
     depends_on:
       - rapidpro
     links:
@@ -114,7 +114,7 @@ services:
       - IS_PROD=${IS_PROD:-off}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
-    image: praekeltfoundation/rapidpro:v5
+    image: praekeltfoundation/rapidpro:v5.0.9
     depends_on:
       - rapidpro
     links:
@@ -153,7 +153,7 @@ services:
         soft: -1
         hard: -1
   rp-indexer:
-    image: praekeltfoundation/rp-indexer:latest
+    image: cromulus/rp-indexer:2.0.0
     depends_on:
      - rapidpro
     links:
@@ -174,7 +174,7 @@ services:
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
-    image: cromulus/mailroom:latest
+    image: cromulus/mailroom:2.0.9
     depends_on:
       - rapidpro 
     links:
@@ -193,7 +193,7 @@ services:
       - MAILROOM_S3_MEDIA_BUCKET=${MAILROOM_S3_MEDIA_BUCKET:-mailroom}
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
   courier:
-    image: praekeltfoundation/courier:latest
+    image: praekeltfoundation/courier:2.0.2
     depends_on:
       - rapidpro
     links:
