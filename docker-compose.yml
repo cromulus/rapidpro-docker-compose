@@ -187,6 +187,7 @@ services:
       - redis
       - postgresql
     environment:
+      - MAILROOM_ADDRESS=0.0.0.0
       - MAILROOM_DB=postgres://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - MAILROOM_REDIS=redis://redis:6379/0
       - MAILROOM_SMTP_SERVER=${MAILROOM_SMTP_SERVER:-smtp://user%40password@server:port/?from=foo%40gmail.com}
