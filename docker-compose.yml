@@ -6,6 +6,7 @@ services:
     links:
       - rapidpro
       - courier
+      - mailroom
     volumes:
       - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
       - "./nginx/certs:/etc/nginx/certs"
@@ -50,6 +51,11 @@ services:
       - elasticsearch
     volumes:
       - "./data/sitestatic:/sitestatic"
+    links:
+      - redis
+      - postgresql
+      - elasticsearch
+      - mailroom
     environment:
       - DOMAIN_NAME=${RAPIDPRO_HOST:-localhost}
       - ALLOWED_HOSTS=${RAPIDPRO_HOST:-localhost}
@@ -101,6 +107,7 @@ services:
       - redis
       - postgresql
       - elasticsearch
+      - mailroom
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
@@ -121,6 +128,7 @@ services:
       - redis
       - postgresql
       - elasticsearch
+      - mailroom
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - REDIS_URL=redis://redis:6379/0
