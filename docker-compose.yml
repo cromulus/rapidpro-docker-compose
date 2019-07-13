@@ -44,7 +44,7 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: praekeltfoundation/rapidpro:v5.0.9
+    image: cromulus/rapidpro:v5.0.9
     depends_on:
       - redis
       - postgresql
