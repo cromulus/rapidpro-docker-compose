@@ -99,6 +99,7 @@ services:
       - MAILROOM_URL='http://mailroom:8090'
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - STORAGE_URL=${STORAGE_URL}
+      - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
   celery_base:
     image: praekeltfoundation/rapidpro:v5.0.9
     depends_on:
