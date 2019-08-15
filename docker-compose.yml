@@ -80,7 +80,8 @@ services:
       - AWS_STATIC=${AWS_STATIC:-off}
       - AWS_MEDIA=${AWS_MEDIA:-off}
       - AWS_QUERYSTRING_AUTH=${AWS_QUERYSTRING_AUTH:-False}
-      - CDN_DOMAIN_NAME=${AWS_BUCKET_DOMAIN:-changeme}
+      - AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
+      - CDN_DOMAIN_NAME=${CDN_DOMAIN_NAME:-changeme}
       - EMAIL_HOST=${EMAIL_HOST:-example.com}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-admin@example.com}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-changeme}
