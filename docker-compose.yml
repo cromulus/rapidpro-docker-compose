@@ -44,7 +44,7 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: cromulus/rapidpro:v5.0.9
+    image: cromulus/rapidpro:latest
     depends_on:
       - redis
       - postgresql
@@ -81,6 +81,7 @@ services:
       - AWS_MEDIA=${AWS_MEDIA:-off}
       - AWS_QUERYSTRING_AUTH=${AWS_QUERYSTRING_AUTH:-False}
       - AWS_S3_CUSTOM_DOMAIN=${AWS_S3_CUSTOM_DOMAIN}
+      - AWS_QUERYSTRING_EXPIRE=${AWS_QUERYSTRING_EXPIRE:-31556952}
       - CDN_DOMAIN_NAME=${CDN_DOMAIN_NAME:-changeme}
       - EMAIL_HOST=${EMAIL_HOST:-example.com}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-admin@example.com}
