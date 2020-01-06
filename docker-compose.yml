@@ -103,7 +103,7 @@ services:
       - STORAGE_URL=${STORAGE_URL}
       - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
   celery_base:
-    image: praekeltfoundation/rapidpro:v5.0.9
+    image: cromulus/rapidpro:latest
     depends_on:
       - rapidpro
     links:
@@ -124,7 +124,7 @@ services:
       - IS_PROD=${IS_PROD:-off}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
-    image: praekeltfoundation/rapidpro:v5.0.9
+    image: cromulus/rapidpro:latest
     depends_on:
       - rapidpro
     links:
@@ -164,7 +164,7 @@ services:
         soft: -1
         hard: -1
   rp-indexer:
-    image: cromulus/rp-indexer:2.0.0
+    image: cromulus/rp-indexer:latest
     depends_on:
      - rapidpro
     links:
@@ -174,7 +174,7 @@ services:
       - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - INDEXER_ELASTIC_URL=http://elastic:changeme@elasticsearch:9200
   rp-archiver:
-    image: cromulus/rp-archiver
+    image: cromulus/rp-archiver:latest
     depends_on:
       - rapidpro
     links:
@@ -185,7 +185,7 @@ services:
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
-    image: cromulus/mailroom:2.0.9
+    image: cromulus/mailroom:latest
     links:
       - redis
       - postgresql
