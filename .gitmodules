@@ -1,0 +1,15 @@
+[submodule "rapidpro_build/courier-docker"]
+	path = rapidpro_build/courier-docker
+	url = https://github.com/praekeltfoundation/courier-docker.git
+[submodule "rapidpro_build/mailroom-docker"]
+	path = rapidpro_build/mailroom-docker
+	url = git@github.com:cromulus/mailroom-docker.git
+[submodule "rapidpro_build/rapidpro-docker"]
+	path = rapidpro_build/rapidpro-docker
+	url = https://github.com/praekeltfoundation/rapidpro-docker.git
+[submodule "rapidpro_build/rp-indexer-docker"]
+	path = rapidpro_build/rp-indexer-docker
+	url = https://github.com/praekeltfoundation/rp-indexer-docker.git
+[submodule "rapidpro_build/rp-archiver-docker"]
+	path = rapidpro_build/rp-archiver-docker
+	url = https://github.com/cromulus/rp-archiver-docker
