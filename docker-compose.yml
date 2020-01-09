@@ -204,7 +204,7 @@ services:
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
   courier:
-    image: praekeltfoundation/courier:2.0.2
+    image: cromulus/courier:latest
     depends_on:
       - rapidpro
     links:
