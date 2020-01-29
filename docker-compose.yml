@@ -159,7 +159,6 @@ services:
       - ES_HEAP_SIZE=512m
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
