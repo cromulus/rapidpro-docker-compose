@@ -25,15 +25,15 @@ docker push cromulus/courier:latest
 
 cd ../rp-archiver-docker
 git fetch && git checkout master
-docker build . -t cromulus/rp-archiver:$ARCHIVER --build-arg ARCHIVER_VERSION=$ARCHIVER
+docker build . -t cromulus/rp-archiver:$ARCHIVER --build-arg RP_ARCHIVER_VERSION=$ARCHIVER
 docker push cromulus/rp-archiver:$ARCHIVER
-docker build . -t cromulus/rp-archiver:latest --build-arg ARCHIVER_VERSION=$ARCHIVER
+docker build . -t cromulus/rp-archiver:latest --build-arg RP_ARCHIVER_VERSION=$ARCHIVER
 docker push cromulus/rp-archiver:latest
 
 
 cd ../rp-indexer-docker
 git fetch && git checkout master
-docker build . -t cromulus/rp-indexer:$INDEXER --build-arg INDEXER_VERSION=$INDEXER
+docker build . -t cromulus/rp-indexer:$INDEXER --build-arg RP_INDEXER_VERSION=$INDEXER
 docker push cromulus/rp-indexer:$INDEXER
-docker build . -t cromulus/rp-indexer:latest --build-arg INDEXER_VERSION=$INDEXER
+docker build . -t cromulus/rp-indexer:latest --build-arg RP_INDEXER_VERSION=$INDEXER
 docker push cromulus/rp-indexer:latest
