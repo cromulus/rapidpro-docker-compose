@@ -44,7 +44,11 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: cromulus/rapidpro:latest
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
+    build:
+      context: ./rapidpro_build/rapidpro-docker
+      args:
+        - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-v5.2.6}
     depends_on:
       - redis
       - postgresql
@@ -103,7 +107,7 @@ services:
       - STORAGE_URL=${STORAGE_URL}
       - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
   celery_base:
-    image: cromulus/rapidpro:latest
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
     depends_on:
       - rapidpro
     links:
@@ -124,7 +128,7 @@ services:
       - IS_PROD=${IS_PROD:-off}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
-    image: cromulus/rapidpro:latest
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
     depends_on:
       - rapidpro
     links:
@@ -164,7 +168,11 @@ services:
         soft: -1
         hard: -1
   rp-indexer:
-    image: cromulus/rp-indexer:latest
+    image: rp-indexer:${RP_INDEXER_VERSION:-5.2.0}
+    build:
+      context: ./rapidpro_build/rp-indexer-docker
+      args:
+        - RP_INDEXER_VERSION=${RP_INDEXER_VERSION:-5.2.0}
     depends_on:
      - rapidpro
     links:
@@ -174,7 +182,11 @@ services:
       - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - INDEXER_ELASTIC_URL=http://elastic:changeme@elasticsearch:9200
   rp-archiver:
-    image: cromulus/rp-archiver:latest
+    image: rp-archiver:${RP_ARCHIVER_VERSION:-5.2.0}
+    build:
+      context: ./rapidpro_build/rp-archiver-docker
+      args:
+        - RP_ARCHIVER_VERSION=${RP_ARCHIVER_VERSION:-5.2.0}
     depends_on:
       - rapidpro
     links:
@@ -185,7 +197,11 @@ services:
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
-    image: cromulus/mailroom:latest
+    image: mailroom:${MAILROOM_VERSION:-5.2.6}
+    build:
+      context: ./rapidpro_build/mailroom-docker
+      args:
+        - MAILROOM_VERSION=${MAILROOM_VERSION:-5.2.6}
     links:
       - redis
       - postgresql
@@ -204,7 +220,11 @@ services:
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
   courier:
-    image: cromulus/courier:latest
+    image: courier:${COURIER_VERSION:-5.2.0}
+    build:
+      context: ./rapidpro_build/courier-docker
+      args:
+        - COURIER_VERSION=${COURIER_VERSION:-5.2.0}
     depends_on:
       - rapidpro
     links:
