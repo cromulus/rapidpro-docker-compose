@@ -106,6 +106,12 @@ services:
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - STORAGE_URL=${STORAGE_URL}
       - FLOW_FROM_EMAIL=${FLOW_FROM_EMAIL}
+      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
+      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
+      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
+      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
+      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
+      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
   celery_base:
     image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
     depends_on:
@@ -126,6 +132,12 @@ services:
       - SEND_CALLS=${SEND_CALLS:-off}
       - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
       - IS_PROD=${IS_PROD:-off}
+      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
+      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
+      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
+      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
+      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
+      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
     image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
@@ -147,6 +159,12 @@ services:
       - SEND_CALLS=${SEND_CALLS:-off}
       - SEND_WEBHOOKS=${SEND_WEBHOOKS:-off}
       - IS_PROD=${IS_PROD:-off}
+      - API_THROTTLE_V2=${API_THROTTLE_V2:-2500/hour}
+      - API_THROTTLE_V2_CONTACTS=${API_THROTTLE_V2_CONTACTS:-2500/hour}
+      - API_THROTTLE_V2_MESSAGES=${API_THROTTLE_V2_MESSAGES:-2500/hour}
+      - API_THROTTLE_V2_RUNS=${API_THROTTLE_V2_RUNS:-2500/hour}
+      - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
+      - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
     command: ["/venv/bin/celery", "--app=temba", "worker", "--loglevel=ERROR", "--queues=msgs,handler"]
   redis:
     image: redis:alpine
