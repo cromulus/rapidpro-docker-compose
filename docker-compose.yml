@@ -10,7 +10,7 @@ services:
     volumes:
       - "./etc/nginx/conf.d/:/etc/nginx/conf.d/"
       - "./nginx/certs:/etc/nginx/certs"
-      - "./data/sitestatic:/sitestatic"
+      - sitestatic-volume:/rapidpro/sitestatic
     environment:
       - VIRTUAL_HOST=${RAPIDPRO_HOST:-localhost}
       - LETSENCRYPT_HOST=${RAPIDPRO_HOST:-localhost}
@@ -54,7 +54,7 @@ services:
       - postgresql
       - elasticsearch
     volumes:
-      - "./data/sitestatic:/sitestatic"
+      - sitestatic-volume:/rapidpro/sitestatic
     links:
       - redis
       - postgresql
@@ -259,3 +259,5 @@ services:
       - COURIER_S3_MEDIA_PREFIX=courier
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
       - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
+volumes:
+  - sitestatic-volume: /rapidpro/sitestatic
