@@ -260,4 +260,4 @@ services:
       - COURIER_S3_MEDIA_BUCKET=${COURIER_S3_MEDIA_BUCKET:-changeme}
       - COURIER_LOG_LEVEL=${COURIER_LOG_LEVEL:-error}
 volumes:
-  sitestatic-volume: /rapidpro/sitestatic
+  sitestatic-volume:
