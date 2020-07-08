@@ -44,11 +44,11 @@ services:
       - NGINX_PROXY_CONTAINER=nginx-proxy
       - LETSENCRYPT_TEST=${LETSENCRYPT_TEST:-true}
   rapidpro:
-    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.4.13}
     build:
       context: ./rapidpro_build/rapidpro-docker
       args:
-        - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-v5.2.6}
+        - RAPIDPRO_VERSION=${RAPIDPRO_VERSION:-v5.4.13}
     depends_on:
       - redis
       - postgresql
@@ -113,7 +113,7 @@ services:
       - API_THROTTLE_V2_API=${API_THROTTLE_V2_API:-2500/hour}
       - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
   celery_base:
-    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.4.13}
     depends_on:
       - rapidpro
     links:
@@ -140,7 +140,7 @@ services:
       - API_THROTTLE_V2_BROADCASTS=${API_THROTTLE_V2_BROADCAST:-2500/hour}
     command: ["/venv/bin/celery", "--beat", "--app=temba", "worker", "--loglevel=ERROR", "--queues=celery,flows"]
   celery_msgs:
-    image: rapidpro:${RAPIDPRO_VERSION:-v5.2.6}
+    image: rapidpro:${RAPIDPRO_VERSION:-v5.4.13}
     depends_on:
       - rapidpro
     links:
@@ -186,11 +186,11 @@ services:
         soft: -1
         hard: -1
   rp-indexer:
-    image: rp-indexer:${RP_INDEXER_VERSION:-5.2.0}
+    image: rp-indexer:${RP_INDEXER_VERSION:-5.4.0}
     build:
       context: ./rapidpro_build/rp-indexer-docker
       args:
-        - RP_INDEXER_VERSION=${RP_INDEXER_VERSION:-5.2.0}
+        - RP_INDEXER_VERSION=${RP_INDEXER_VERSION:-5.4.0}
     depends_on:
      - rapidpro
     links:
@@ -200,11 +200,11 @@ services:
       - INDEXER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
       - INDEXER_ELASTIC_URL=http://elastic:changeme@elasticsearch:9200
   rp-archiver:
-    image: rp-archiver:${RP_ARCHIVER_VERSION:-5.2.0}
+    image: rp-archiver:${RP_ARCHIVER_VERSION:-5.4.0}
     build:
       context: ./rapidpro_build/rp-archiver-docker
       args:
-        - RP_ARCHIVER_VERSION=${RP_ARCHIVER_VERSION:-5.2.0}
+        - RP_ARCHIVER_VERSION=${RP_ARCHIVER_VERSION:-5.4.0}
     depends_on:
       - rapidpro
     links:
@@ -215,11 +215,11 @@ services:
       - ARCHIVER_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-changeme}
       - ARCHIVER_DB=postgresql://postgres:postgres@postgresql/rapidpro?sslmode=disable
   mailroom:
-    image: mailroom:${MAILROOM_VERSION:-5.2.6}
+    image: mailroom:${MAILROOM_VERSION:-5.4.4}
     build:
       context: ./rapidpro_build/mailroom-docker
       args:
-        - MAILROOM_VERSION=${MAILROOM_VERSION:-5.2.6}
+        - MAILROOM_VERSION=${MAILROOM_VERSION:-5.4.4}
     links:
       - redis
       - postgresql
@@ -238,11 +238,11 @@ services:
       - MAILROOM_AUTH_TOKEN=${MAILROOM_AUTH_TOKEN:-changeme}
       - MAILROOM_LOG_LEVEL=${MAILROOM_LOG_LEVEL:-error}
   courier:
-    image: courier:${COURIER_VERSION:-5.2.0}
+    image: courier:${COURIER_VERSION:-5.4.0}
     build:
       context: ./rapidpro_build/courier-docker
       args:
-        - COURIER_VERSION=${COURIER_VERSION:-5.2.0}
+        - COURIER_VERSION=${COURIER_VERSION:-5.4.0}
     depends_on:
       - rapidpro
     links:
