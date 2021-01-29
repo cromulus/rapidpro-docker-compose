@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ./versions
+cd .. && git submodule update --force --recursive --init --remote && cd rapidpro_build
 cd rapidpro-docker
 git fetch && git checkout master
 docker build . -t cromulus/rapidpro:$RAPIDPRO_VERSION --build-arg RAPIDPRO_VERSION=$RAPIDPRO_VERSION
