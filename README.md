@@ -1,5 +1,7 @@
 # rapidpro-docker-compose
 
+*** abandoned ***
+
 A deployable rapidpro docker-compose setup. Batteries included:
 - ssl via letsencrypt
 - backing services: elasticsearch, postgres, redis, etc.
