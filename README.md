@@ -1,6 +1,6 @@
 # rapidpro-docker-compose
 
-*** abandoned ***
+*** abandoned, no longer maintained, kaput, finit, etc.  ***
 
 A deployable rapidpro docker-compose setup. Batteries included:
 - ssl via letsencrypt
